@@ -1,20 +1,20 @@
 use automotriz;
 -- 	CARGA DE DATOS
 insert into modelo values
-(1,"CAMARO"),
-(2,"MUSTANG");
+(1,"CAMARO",true),
+(2,"MUSTANG",true);
 
 insert into linea_de_montaje values
-(1,1,60),
-(2,2,50);
+(1,1,60,true),
+(2,2,50,true);
 
 insert into estacion values
-(0,'A fabricar',0),
-(1,"Chasis",1),
-(2,"Pintura",2),
-(3,"Tren delantero y trasero",3),
-(4,"Electricidad",4),
-(5,"Motorización y banco de prueba",5);
+(0,'A fabricar',0,true),
+(1,"Chasis",1,true),
+(2,"Pintura",2,true),
+(3,"Tren delantero y trasero",3,true),
+(4,"Electricidad",4,true),
+(5,"Motorización y banco de prueba",5,true);
 
 insert into estaciones_x_linea values
 (1,1),
@@ -29,10 +29,10 @@ insert into estaciones_x_linea values
 (2,5);
 
 insert into insumo values
-(1,"Capot"),(2,"Optica"),(3,"Puerta"),(4,"Ventanilla"),(5,"Pintura"),
-(6,"Masilla"),(7,"Lija"),(8,"Diluyente"),(9,"Llanta"),(10,"Cubierta"),
-(11,"Suspensión"),(12,"Transmisión"),(13,"Cableado"),(14,"Encendido"),
-(15,"Bateria"),(16,"Motor"),(17,"Escape"),(18,"Burro de Arranque");
+(1,"Capot",true),(2,"Optica",true),(3,"Puerta",true),(4,"Ventanilla",true),(5,"Pintura",true),
+(6,"Masilla",true),(7,"Lija",true),(8,"Diluyente",true),(9,"Llanta",true),(10,"Cubierta",true),
+(11,"Suspensión",true),(12,"Transmisión",true),(13,"Cableado",true),(14,"Encendido",true),
+(15,"Bateria",true),(16,"Motor",true),(17,"Escape",true),(18,"Burro de Arranque",true);
 
 insert into insumo_x_estacion values
 (1,1,1,"unidades"),     -- estación "Chasis", capot 1 u
@@ -58,16 +58,16 @@ insert into insumo_x_estacion values
 
 
 insert into proveedor values
-("30-71031609-7","Autopartes SOL"),
-("30-47639864-2","Accesorios JDT"),
-("33-12639451-4","Danlay SRL"),
-("33-95735649-1","PoliAuto"),
-("30-17264593-5","Accesorios FA-MA"),
-("30-36275873-2","ABC Accesorios"),
-("33-45636234-5","Daimler AG"),
-("30-15678234-9","KIT Accesorios"),
-("30-45678123-4","El Fierrero"),
-("33-98651235-2","Todo Partes");
+("30-71031609-7","Autopartes SOL",true),
+("30-47639864-2","Accesorios JDT",true),
+("33-12639451-4","Danlay SRL",true),
+("33-95735649-1","PoliAuto",true),
+("30-17264593-5","Accesorios FA-MA",true),
+("30-36275873-2","ABC Accesorios",true),
+("33-45636234-5","Daimler AG",true),
+("30-15678234-9","KIT Accesorios",true),
+("30-45678123-4","El Fierrero",true),
+("33-98651235-2","Todo Partes",true);
 
 
 insert into insumo_por_proveedor values
@@ -97,15 +97,15 @@ insert into insumo_por_proveedor values
 
 
 insert into concesionaria values
-(1,"General Motors",180),
-(2,"The Vanguard Group",100),
-(3,"Daimler AG",150),
-(4,"BD Group",10); -- una que no hace pedidos
+(1,"General Motors",180,true),
+(2,"The Vanguard Group",100,true),
+(3,"Daimler AG",150,true),
+(4,"BD Group",10,true); -- una que no hace pedidos
 
 insert into pedido values
-(1,1,'2019-01-01'), -- completo poorque ya tengo la cantidad de vehiculos los terminados en vehiculo_x_estacion
-(2,2,'2019-01-07'), -- a medio completar poorque tengo la cantidad de vehiculos empezados pero falta terminar algunos en vehiculo_x_estacion
-(3,3,'2019-01-11');  -- pendiente poorque no igresaron a la estacion 1 en vehiculo_x_estacion
+(1,1,'2019-01-01',true), -- completo poorque ya tengo la cantidad de vehiculos los terminados en vehiculo_x_estacion
+(2,2,'2019-01-07',true), -- a medio completar poorque tengo la cantidad de vehiculos empezados pero falta terminar algunos en vehiculo_x_estacion
+(3,3,'2019-01-11',true);  -- pendiente poorque no igresaron a la estacion 1 en vehiculo_x_estacion
 
 insert into modelo_x_pedido values
 (1,1,3),
@@ -118,33 +118,33 @@ insert into modelo_x_pedido values
 --  y 15 vehiculos modelos 2... si quisieramos tener todos serian 27,  18 pasan por las 5 estaciones o alguna de ellas y 9 quedan en la estación 0
 
 insert into vehiculo values
-("1ANCS13Z6M0246591",1,1), -- pedido 1
-("2APDW57A2G2855222",1,1),
-("3AGSG97W6G6262333",1,1),
-("1BSHC52U9L2354111",2,1),
-("2BPDW57A2G2855222",2,1),
-("3BSHC52U9L2354323",2,1),
-("4BUCS13G6M0246244",2,1),
-("5BSHC52U9L2354525",2,1), 
-("1CECS13G6M0246551",1,2), -- pedido 2
-("2CPDW57A2G2855242",1,2),
-("3CGSG97W6G6262393",1,2),
-("4CPDW57A2G2855244",1,2),
-("1DHJF13G6M0241111",2,2),
-("2DKDS57A2G2852222",2,2),
-("3DRUP97W6G6263333",2,2),
-("4DLHA57A2G2854444",2,2),
-("5DTDK13G6M0245555",2,2),
-("6DMDR57A2G2855466",2,2),
-("1EECS13G6M0246111",1,3),-- pedido 3
-("2EECS13G6M0246222",1,3),
-("3EPDW57A2G2855233",1,3),
-("4EGSG97W6G6262444",1,3),
-("5EPDW57A2G2855555",1,3),
-("1FHJF13G6M0244511",2,3),
-("2FKDS57A2G2855622",2,3),
-("3FRUP97W6G6267833",2,3),
-("4FLHA57A2G2858944",2,3); 
+("1ANCS13Z6M0246591",1,1,true), -- pedido 1
+("2APDW57A2G2855222",1,1,true),
+("3AGSG97W6G6262333",1,1,true),
+("1BSHC52U9L2354111",2,1,true),
+("2BPDW57A2G2855222",2,1,true),
+("3BSHC52U9L2354323",2,1,true),
+("4BUCS13G6M0246244",2,1,true),
+("5BSHC52U9L2354525",2,1,true), 
+("1CECS13G6M0246551",1,2,true), -- pedido 2
+("2CPDW57A2G2855242",1,2,true),
+("3CGSG97W6G6262393",1,2,true),
+("4CPDW57A2G2855244",1,2,true),
+("1DHJF13G6M0241111",2,2,true),
+("2DKDS57A2G2852222",2,2,true),
+("3DRUP97W6G6263333",2,2,true),
+("4DLHA57A2G2854444",2,2,true),
+("5DTDK13G6M0245555",2,2,true),
+("6DMDR57A2G2855466",2,2,true),
+("1EECS13G6M0246111",1,3,true),-- pedido 3
+("2EECS13G6M0246222",1,3,true),
+("3EPDW57A2G2855233",1,3,true),
+("4EGSG97W6G6262444",1,3,true),
+("5EPDW57A2G2855555",1,3,true),
+("1FHJF13G6M0244511",2,3,true),
+("2FKDS57A2G2855622",2,3,true),
+("3FRUP97W6G6267833",2,3,true),
+("4FLHA57A2G2858944",2,3,true); 
 
 
 insert into vehiculo_x_estacion values

@@ -4,18 +4,21 @@ use automotriz;
 create table if not exists vehiculo (
 nro_chasis varchar(45) primary key,
 id_modelo int,
-id_pedido int
+id_pedido int,
+dado_de_alta boolean
 );
 
 create table if not exists modelo (
 codigo int primary key,
-nombre varchar(45)
+nombre varchar(45),
+dado_de_alta boolean
 );
 
 create table if not exists concesionaria(
 codigo int primary key,
 razon_social varchar(100),
-reporte_de_ventas int
+reporte_de_ventas int,
+dado_de_alta boolean
 );
 
 create table if not exists vehiculo_x_estacion(
@@ -29,7 +32,8 @@ primary key(id_vehiculo,id_estacion)
 create table if not exists estacion(
 codigo int primary key,
 nombre varchar(100),
-orden int
+orden int,
+dado_de_alta boolean
 );
 
 create table if not exists estaciones_x_linea(
@@ -41,12 +45,14 @@ primary key(id_linea_de_montaje,id_estacion)
 create table if not exists linea_de_montaje(
 codigo int primary key,
 id_modelo_prod int,
-produccion_promedio_mensual int
+produccion_promedio_mensual int,
+dado_de_alta boolean
 );
 
 create table if not exists insumo(
 codigo int primary key,
-nombre varchar(45) -- saqué el atributo "idproveedor int", porque lo tenemos en la tabla "insumo_por_proveedor"
+nombre varchar(45), -- saqué el atributo "idproveedor int", porque lo tenemos en la tabla "insumo_por_proveedor"
+dado_de_alta boolean
 );
 
 create table if not exists insumo_por_proveedor(
@@ -58,7 +64,8 @@ primary key(id_insumo,id_proveedor)
 
 create table if not exists proveedor(
 cuit varchar(45) primary key, -- cambié el tipo
-razon_social varchar(100) -- saqué el atributo "idinsumo_fabricado int" , porque lo tenemos en la tabla "insumo_por_proveedor"
+razon_social varchar(100), -- saqué el atributo "idinsumo_fabricado int" , porque lo tenemos en la tabla "insumo_por_proveedor"
+dado_de_alta boolean
 );
 
 create table if not exists insumo_x_estacion(
@@ -72,7 +79,8 @@ primary key(id_insumo,id_estacion)
 create table if not exists pedido(
 nro_pedido int primary key,
 id_concesionaria int,
-fecha date
+fecha date,
+dado_de_alta boolean
 );
 
 create table if not exists modelo_x_pedido(
