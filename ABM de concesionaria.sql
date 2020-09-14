@@ -69,8 +69,8 @@ begin
 end $$
 delimiter ;
 
-#call altaConcesionaria(8,'6067');
-#call modificacionConcesionaria(8,'600');
-#call bajaConcesionaria(8);
+call altaConcesionaria(5,'Concesionaria de prueba',120);
+call modificacionConcesionaria(5,'Probando modificacion', 120);
+call bajaConcesionaria(5);
 
- select * from modelo;
+ select * from concesionaria;
