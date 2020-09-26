@@ -14,24 +14,24 @@ END $$
 delimiter ;
 
 delimiter $$
-CREATE procedure altaPedido(in nro_pedido_input int, in id_concesionaria_input int)
+CREATE procedure altaPedido(in nro_pedido_input int, in id_concesionaria_input int,in fecha_input date)
 begin   
     declare existNro_pedido int;
     call verificarParaDarAltaPedido(existNro_pedido, nro_pedido_input);
 	if (existNro_pedido = 1) then
        select 'NO se puede agregar el registro' as mensaje_de_ERROR, CONCAT('Ya existe numero de pedido: ', nro_pedido_input) as causa_del_ERROR;
     else
-		insert into pedido (nro_pedido, id_concesionaria, dado_de_alta) values(nro_pedido_input, id_concesionaria_input, true);
+		insert into pedido (nro_pedido, id_concesionaria, fecha,dado_de_alta) values(nro_pedido_input, id_concesionaria_input,fecha_input, true);
         select 'Pedido agregado correctamente' as mensaje;
 	end if;
 END $$
 delimiter ;
 
 delimiter $$
-CREATE procedure modificacionPedido(in nro_pedido_input int, in id_concesionaria_input int)
+CREATE procedure modificacionPedido(in nro_pedido_input int, in id_concesionaria_input int,in fecha_input date)
 begin    
     if exists (select * from pedido where nro_pedido = nro_pedido_input) then
-       update pedido set nro_pedido = nro_pedido_input, id_concesionaria = id_concesionaria_input where nro_pedido = nro_pedido_input;
+       update pedido set nro_pedido = nro_pedido_input, id_concesionaria = id_concesionaria_input,fecha =fecha_input where nro_pedido = nro_pedido_input;
        select 'Pedido modificado correctamente'  as mensaje;
 	else
        select 'No se puede modificar el pedido' as mensaje_de_ERROR, CONCAT('No existe uno con el nroPedido ', nro_pedido_input) as causa_del_ERROR;
@@ -43,8 +43,7 @@ delimiter $$
 CREATE procedure bajaPedido(in nro_pedido_input INT)
 begin    
     if exists (select * from pedido where nro_pedido = nro_pedido_input) then
-		SET SQL_SAFE_UPDATES = 0;
-		delete from pedido where nro_pedido = nro_pedido_input;
+		update pedido set dado_de_alta=false where nro_pedido = nro_pedido_input;
         select 'Eliminado correctamente'  as mensaje;
 	else
 		select 'NO se puede eliminar el pedido ' as mensaje_de_ERROR, CONCAT('NO existe uno con el nroPedido ', nro_pedido_input) as causa_del_ERROR; 
