@@ -39,15 +39,15 @@ begin
 end $$
 delimiter ;
 
+
 delimiter $$
 CREATE procedure bajaVehiculo(in nro_chasis_input varchar(45))
 begin    
     if exists (select * from vehiculo where nro_chasis = nro_chasis_input) then
-		SET SQL_SAFE_UPDATES = 0;
-		delete from vehiculo where nro_chasis = nro_chasis_input;
+		update vehiculo set dado_de_alta=false where nro_chasis = nro_chasis_input;
         select 'Eliminado correctamente'  as mensaje;
 	else
-		select 'NO se puede eliminar el registro ' as mensaje_de_ERROR, CONCAT('NO existe uno con el chasis ', nro_chasis_input) as causa_del_ERROR; 
+		select 'NO se puede eliminar el vehiculo ' as mensaje_de_ERROR, CONCAT('NO existe un vehiculo con el numero de chasis ', nro_chasis_input) as causa_del_ERROR; 
     end if;
 end $$
 delimiter ;
