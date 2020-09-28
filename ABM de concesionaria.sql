@@ -60,13 +60,14 @@ delimiter $$
 CREATE procedure bajaConcesionaria(in codigo_input int)
 begin    
     if exists (select * from concesionaria where codigo = codigo_input) then
-		SET SQL_SAFE_UPDATES = 0;
-		delete from concesionaria where codigo = codigo_input;
+		update concesionaria set dado_de_alta=false where codigo = codigo_input;
         select 'Eliminado correctamente'  as mensaje;
 	else
-		select 'NO se puede eliminar el registro ' as mensaje_de_ERROR, CONCAT('NO existe uno con el código ', codigo_input) as causa_del_ERROR; 
+		select 'NO se puede eliminar la concesionaria ' as mensaje_de_ERROR, CONCAT('NO existe una concesionaria con el código ', codigo_input) as causa_del_ERROR; 
     end if;
 end $$
+
+
 delimiter ;
 
 call altaConcesionaria(5,'Concesionaria de prueba',120);
