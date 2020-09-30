@@ -57,7 +57,7 @@ CREATE procedure bajaProveedor(in cuit_input varchar(45))
 begin    
     if exists (select * from proveedor where cuit = cuit_input) then
 		SET SQL_SAFE_UPDATES = 0;
-		delete from proveedor where cuit = cuit_input;
+        update proveedor set dado_de_alta=false where cuit = cuit_input;
         select 'Eliminado correctamente'  as mensaje;
 	else
 		select 'NO se puede eliminar el registro ' as mensaje_de_ERROR, CONCAT('NO existe uno con el código ', cuit_input) as causa_del_ERROR; 
@@ -68,6 +68,8 @@ delimiter ;
 call altaProveedor("1-111111-1116",'Proveedor de prueba');
 call modificacionProveedor("1-111111-1116",'Probando modificación');
 call bajaProveedor("1-111111-1116");
+
+SELECT * FROM proveedor p where p.dado_de_alta = 1; /* Debido a que se realiza baja logica  */ 
 
 call altaProveedor("30-71031609-7","Autopartes SOL");
 call altaProveedor("30-47639864-2","Accesorios JDT");
