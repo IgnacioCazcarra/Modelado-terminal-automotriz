@@ -35,7 +35,7 @@ begin
 	elseif existNombre = 1 then
        select 'NO se puede agregar el registro' as mensaje_de_ERROR, CONCAT('Ya existe uno con nombre: ',nombre_input) as causa_del_ERROR;
     else
-		insert into modelo (codigo, nombre) values(codigo_input, nombre_input);
+		insert into modelo (codigo, nombre,dado_de_alta) values(codigo_input, nombre_input,true);
         select 'Se agregó correctamente' as mensaje;
 	end if;
 END $$
