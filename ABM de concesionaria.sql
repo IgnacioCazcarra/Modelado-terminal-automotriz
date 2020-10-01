@@ -36,7 +36,7 @@ begin
 	elseif existRazonSocial = 1 then
        select 'NO se puede agregar el registro' as mensaje_de_ERROR, CONCAT('Ya existe uno con razon social: ',codigo_input) as causa_del_ERROR;
     else
-		insert into concesionaria (codigo, razon_social, reporte_de_ventas) values(codigo_input, razon_social_input, reporte_de_ventas_input);
+		insert into concesionaria (codigo, razon_social, reporte_de_ventas, dado_de_alta) values(codigo_input, razon_social_input, reporte_de_ventas_input,true);
         select 'Se agregó correctamente' as mensaje;
 	end if;
 END $$

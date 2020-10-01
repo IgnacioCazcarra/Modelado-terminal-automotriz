@@ -1,3 +1,4 @@
+drop schema if exists automotriz;
 create schema if not exists automotriz;
 use automotriz;
 
