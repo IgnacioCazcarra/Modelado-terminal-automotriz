@@ -1,3 +1,14 @@
+delimiter $$
+CREATE procedure agregarVehiculoAEstacion(in id_vehiculo varchar(45), in id_estacion int, in fecha_hora_entrada datetime)
+begin   
+			    insert into vehiculo_x_estacion (id_vehiculo, id_estacion, fecha_hora_entrada, fecha_hora_salida) 
+                values(id_vehiculo, id_estacion, fecha_hora_entrada, null);
+			    select 'Se agregó el vehículo a la estación' as mensaje;
+END $$
+delimiter ;
+
+
+
 
 delimiter $$
 CREATE procedure altaPedido(in nro_pedido_input int, in id_concesionaria_input int, in fecha_input date, in id_modelo_input int, in cantidad_input int)
@@ -35,7 +46,8 @@ begin
         END IF;
 		SET nInsertados = 0;
         WHILE nInsertados < nCantidadDetalle DO
-        call altaVehiculo(uuid(), idModeloParametro, idPedidoParametro);		
+        call altaVehiculo(uuid(), idModeloParametro, idPedidoParametro);
+		call agregarVehiculoAEstacion(id_chasis, 0, now());
         SET nInsertados = nInsertados  +1;
 
 		END WHILE;
@@ -47,6 +59,10 @@ begin
 	end if;
 END $$
 delimiter ;
+
+
+call altaConcesionaria(1,'Concecionaria FORD',10);
+call altaEstacion(0, "A fabricar", 0);
 
 
 call altaPedido(1, 1, '2020-10-12', 1, 5);
