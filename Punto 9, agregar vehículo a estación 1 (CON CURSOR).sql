@@ -7,21 +7,20 @@ create procedure iniciarFabricacionDelVehiculoConCursor(OUT nResultado INT, OUT 
         declare fecha_hora_entrada_aux varchar(45)default null;  
         declare fecha_hora_salida_aux varchar(45)default null;  
         declare done int default 0;
-          
+         declare bandera bool default true; 
           DECLARE curAgregarAEstacion1
               CURSOR FOR
             SELECT id_vehiculo,fecha_hora_entrada,fecha_hora_salida from vehiculo_x_estacion WHERE id_estacion=1;
-         
-         DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
-         
-         select id_modelo from vehiculo where nro_chasis = nro_chasis_imput into id_modeloAux; 
-         
+          DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
+          select id_modelo from vehiculo where nro_chasis = nro_chasis_imput into id_modeloAux;
          OPEN curAgregarAEstacion1;
          bucle:LOOP
-        fetch curAgregarAEstacion1 into chasis_aux,fecha_hora_entrada_aux,fecha_hora_salida_aux;
-        select nro_chasis from vehiculo where  id_modelo=id_modeloAux and nro_chasis=chasis_aux and
-        fecha_hora_entrada_aux is not null and fecha_hora_salida_aux is null into chasisOcupante;
-        
+				 fetch curAgregarAEstacion1 into chasis_aux,fecha_hora_entrada_aux,fecha_hora_salida_aux;
+                 if fecha_hora_salida_aux is null then
+					 if exists (select nro_chasis from vehiculo where  id_modelo=id_modeloAux and chasis_aux=nro_chasis) then
+					  set chasisOcupante = chasis_aux;
+					 end if;
+                 end if;
         	IF done = 1 THEN
             LEAVE bucle;
 			end if;
@@ -45,6 +44,8 @@ create procedure iniciarFabricacionDelVehiculoConCursor(OUT nResultado INT, OUT 
         end if;
 	end $$
 delimiter ;
+
+select * from vehiculo;
 
 -- ***** PRUEBAS *****
 -- ***************************************************************************
