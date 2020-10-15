@@ -1,5 +1,5 @@
 delimiter $$
-create procedure iniciarFabricacionDelVehiculoConCursor(OUT nResultado INT, OUT cMensaje VARCHAR(500), in nro_chasis_imput varchar(45)) -- en vehiculo x estacion   estacion 0 de en la linea de su modelo
+create procedure iniciarFabricacionDelVehiculoConCursor(OUT nResultado INT, OUT cMensaje VARCHAR(500), in nro_chasis_imput varchar(45)) -- en vehiculo x estacion   estacion 1 de en la linea de su modelo
 	begin
         declare id_modeloAux INT DEFAULT 0;
         declare chasisOcupante varchar(45) default null;
@@ -7,18 +7,18 @@ create procedure iniciarFabricacionDelVehiculoConCursor(OUT nResultado INT, OUT 
         declare fecha_hora_entrada_aux varchar(45)default null;  
         declare fecha_hora_salida_aux varchar(45)default null;  
         declare done int default 0;
-         declare bandera bool default true; 
-          DECLARE curAgregarAEstacion1
+		declare bandera bool default true; 
+        DECLARE curAgregarAEstacion1
               CURSOR FOR
-            SELECT id_vehiculo,fecha_hora_entrada,fecha_hora_salida from vehiculo_x_estacion WHERE id_estacion=1;
-          DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
-          select id_modelo from vehiculo where nro_chasis = nro_chasis_imput into id_modeloAux;
-         OPEN curAgregarAEstacion1;
-         bucle:LOOP
-				 fetch curAgregarAEstacion1 into chasis_aux,fecha_hora_entrada_aux,fecha_hora_salida_aux;
-                 if fecha_hora_salida_aux is null then
-					 if exists (select nro_chasis from vehiculo where  id_modelo=id_modeloAux and chasis_aux=nro_chasis) then
-					  set chasisOcupante = chasis_aux;
+            SELECT id_vehiculo,fecha_hora_entrada,fecha_hora_salida from vehiculo_x_estacion WHERE id_estacion=1; -- declaramos u
+        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
+		select id_modelo from vehiculo where nro_chasis = nro_chasis_imput into id_modeloAux;
+        OPEN curAgregarAEstacion1; -- abrimos el cursor para recorrerlo
+        bucle:LOOP -- inicio un loop con nombre "bucle" para recorrer el cursor abierto
+				 fetch curAgregarAEstacion1 into chasis_aux,fecha_hora_entrada_aux,fecha_hora_salida_aux; -- los datos de las columnas de cada registro los guardo en distintas variables
+                 if fecha_hora_salida_aux is null then -- si encuentro uno que tenga fecha de salida en null (es decir está ocupando la estación 1)
+					 if exists (select nro_chasis from vehiculo where  id_modelo=id_modeloAux and chasis_aux=nro_chasis) then -- me fijo es del mismo modelo del que recibí por parametros (el que quiero agregar a la estación 1, ya que solo lo puedo agregar en una estación de la linea de montaje del mismo modelo) 
+					  set chasisOcupante = chasis_aux;  -- guardo el nr. de chasis del que esté  en la estación 1, tenga la fecha de salida en null y sea del mismo modelo del que recibí por parametros
 					 end if;
                  end if;
         	IF done = 1 THEN
@@ -26,19 +26,19 @@ create procedure iniciarFabricacionDelVehiculoConCursor(OUT nResultado INT, OUT 
 			end if;
             
         end loop bucle;
-         CLOSE curAgregarAEstacion1;
+        CLOSE curAgregarAEstacion1;
          
-        if id_modeloAux>0 then
-			if chasisOcupante is not null then
+        if id_modeloAux>0 then -- si el nro de chasis fue asignado a algún modelo
+			if chasisOcupante is not null then -- si hay uno en la estación 1 que tenga la fecha de salida en null y sea del mismo modelo del que recibí por parametros
 				select -1 INTO nResultado;	
 				select CONCAT('La estacion esta ocupada por el vehículo ',chasisOcupante) INTO cMensaje;
-			else
+			else -- Si está vacia la estación 1 de la linea de montaje que corresponde al modelo del chasis que recibí por parametros
 				update vehiculo_x_estacion set fecha_hora_entrada = current_time(), id_estacion = 1 
-				where id_estacion = 0 and id_vehiculo = nro_chasis_imput;
+				where id_estacion = 0 and id_vehiculo = nro_chasis_imput;-- ingreso el vehiculo a le estación 1
 				select 0 INTO nResultado;	
 				select ' ' INTO cMensaje;
 			end if;
-        else
+        else -- se ingresó nro de chasis que NO asignado a algún modelo (es un dato erroneo)
 			select -1 INTO nResultado;	
 			select CONCAT('El nro. de chasis ',nro_chasis_imput,' no está asignado a ningún vehículo') INTO cMensaje;
         end if;
