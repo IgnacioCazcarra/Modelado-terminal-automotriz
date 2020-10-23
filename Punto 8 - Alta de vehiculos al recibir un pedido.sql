@@ -14,7 +14,7 @@ delimiter $$
 CREATE procedure altaPedido(in nro_pedido_input int, in id_concesionaria_input int, in fecha_input date, in id_modelo_input int, in cantidad_input int)
 begin   
 	declare existPedido int; declare existModelo int; declare existConcesionaria int; 	DECLARE idPedidoParametro INTEGER DEFAULT 0;
-	DECLARE idChasis INTEGER DEFAULT 0;
+	DECLARE idChasis varchar(45);
 	DECLARE dFechaIngreso DATETIME;
 	DECLARE idModeloParametro INTEGER;
 	DECLARE nCantidadDetalle INT; 
@@ -46,8 +46,9 @@ begin
         END IF;
 		SET nInsertados = 0;
         WHILE nInsertados < nCantidadDetalle DO
-        call altaVehiculo(uuid(), idModeloParametro, idPedidoParametro);
-		call agregarVehiculoAEstacion(id_chasis, 0, now());
+        set idChasis = uuid();
+        call altaVehiculo(idChasis, idModeloParametro, idPedidoParametro);
+		call agregarVehiculoAEstacion(idChasis, 0, now());
         SET nInsertados = nInsertados  +1;
 
 		END WHILE;
