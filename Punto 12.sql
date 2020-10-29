@@ -18,7 +18,3 @@ END $$
 delimiter ;
 
 call listarCantidadInsumosPorPedido(1);
-
-select * from vehiculo_x_estacion vxe where vxe.id_estacion = 5;
-
-select * from linea_de_montaje;
